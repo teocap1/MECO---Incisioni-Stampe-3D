@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MECO - Incisioni Laser & Stampe 3D</title>
+    <link rel="icon" href="meco.jpeg" type="image/jpeg">
+    <link rel="apple-touch-icon" href="meco.jpeg">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="glass-header">
+        <div class="header-container">
+            <div class="logo">
+                <div class="logo-bubble">
+                    <a href="#home">
+                        <img class="logo2" src="meco.jpeg" alt="MECO Logo">
+                    </a>
+                </div>
+                <div class="logo-text">MECO - Incisioni & Stampe 3D</div>
+            </div>
+            
+            <nav class="nav-menu">
+                <button class="nav-link active" data-section="home">
+                    <i class="fas fa-home"></i> Home
+                </button>
+                <button class="nav-link" data-section="catalogo">
+                    <i class="fas fa-th-large"></i> Catalogo
+                </button>
+                <button class="nav-link" data-section="chi-siamo">
+                    <i class="fas fa-users"></i> Chi Siamo
+                </button>
+                <button class="nav-link" data-section="contatti">
+                    <i class="fas fa-envelope"></i> Contatti
+                </button>
+                <button class="nav-link" data-section="favorites">
+                    <i class="fas fa-heart"></i>
+                    <span>Preferiti</span>
+                    <span class="favorites-count" style="display: none;">0</span>
+                </button>
+                <button class="nav-link" data-section="ordini">
+                    <i class="fas fa-box"></i> I Miei Ordini
+                </button>
+
+                <!-- Aggiungi DOPO la navigazione principale -->
+                <div class="user-actions" style="display: flex; align-items: center; gap: 15px;">
+                    
+                    <!-- Icona Carrello -->
+                    <div style="position: relative;">
+                        <button onclick="window.app.cart.openCartModal()" 
+                                style="background: none; border: none; color: var(--text-color); 
+                                    cursor: pointer; font-size: 20px; position: relative;">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span id="cart-count" style="position: absolute; top: -8px; right: -8px; 
+                                background: #ff4757; color: white; border-radius: 50%; 
+                                width: 20px; height: 20px; font-size: 12px; font-weight: bold;
+                                display: none; align-items: center; justify-content: center;">
+                                0
+                            </span>
+                        </button>
+                    </div>
+                    
+                    <!-- Sezione Auth (per non loggati) -->
+                    <div id="auth-section" style="display: flex; gap: 10px;">
+                        <button onclick="window.app.auth.showLoginModal()" 
+                                class="glass-btn" style="padding: 8px 16px; font-size: 14px;">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                        <button onclick="window.app.auth.showSignupModal()" 
+                                class="glass-btn" style="padding: 8px 16px; font-size: 14px;">
+                            <i class="fas fa-user-plus"></i> Registrati
+                        </button>
+                    </div>
+                    
+                    <!-- Sezione Utente (per loggati) -->
+                    <div id="user-section" style="display: none; align-items: center; gap: 15px;">
+                        <span class="user-email" style="color: var(--text-color);"></span>
+                        <button onclick="window.app.auth.signOut()" 
+                                class="glass-btn" style="padding: 8px 16px; font-size: 14px;">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </nav>
+
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero-section">
+                <h1 class="hero-title">MECO - Incisioni & Stampe 3D</h1>
+                <p class="hero-description">
+                    Realizziamo incisioni laser e stampe 3D personalizzate di altissima qualità. 
+                    Ogni pezzo è creato con passione e tecnologia all'avanguardia.
+                </p>
+                <div class="hero-buttons">
+                    <button class="glass-btn" data-section="catalogo">
+                        <span>Esplora Catalogo</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button class="glass-btn btn-secondary" data-section="contatti">
+                        <span>Contattaci</span>
+                        <i class="fas fa-phone"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Nuova sezione nella Home -->
+            <section id="certificazioni" style="padding: 80px 20px; background: rgba(0, 0, 0, 0.2); border-radius: 15px;">
+                <div style="max-width: 1200px; margin: 0 auto;">
+                    <div style="text-align: center; margin-bottom: 60px;">
+                        <h2 style="font-size: 36px; margin-bottom: 15px; color: var(--accent-color);">
+                            <i class="fas fa-award" style="margin-right: 10px;"></i>
+                            Qualità Certificata
+                        </h2>
+                        <p style="color: var(--text-secondary); max-width: 700px; margin: 0 auto; font-size: 16px;">
+                            La nostra garanzia di eccellenza: materiali premium, precisione millimetrica e processi certificati
+                        </p>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;">
+                        <!-- Carta 1: Materiali -->
+                        <div class="cert-card" style="background: var(--glass-bg); padding: 40px; border-radius: 20px; 
+                                                    border: 1px solid var(--glass-border); text-align: center;">
+                            <div style="width: 80px; height: 80px; background: var(--accent-gradient); border-radius: 50%; 
+                                    display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;">
+                                <i class="fas fa-gem" style="font-size: 32px; color: white;"></i>
+                            </div>
+                            <h3 style="color: white; margin-bottom: 15px; font-size: 22px;">Materiali Premium</h3>
+                            <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
+                                Utilizziamo solo legni di prima scelta e filamenti PLA/ABS di qualità certificata
+                            </p>
+                            <div style="color: var(--accent-color); font-size: 14px; font-weight: 600;">
+                                <i class="fas fa-check-circle" style="margin-right: 8px;"></i>
+                                Certificazione FSC per legni
+                            </div>
+                        </div>
+                        
+                        <!-- Carta 2: Precisione -->
+                        <div class="cert-card" style="background: var(--glass-bg); padding: 40px; border-radius: 20px; 
+                                                    border: 1px solid var(--glass-border); text-align: center;">
+                            <div style="width: 80px; height: 80px; background: var(--accent-gradient); border-radius: 50%; 
+                                    display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;">
+                                <i class="fas fa-ruler-combined" style="font-size: 32px; color: white;"></i>
+                            </div>
+                            <h3 style="color: white; margin-bottom: 15px; font-size: 22px;">Precisione Laser</h3>
+                            <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
+                                Macchine a controllo numerico con precisione di ±0.1mm garantiscono risultati perfetti
+                            </p>
+                            <div style="color: var(--accent-color); font-size: 14px; font-weight: 600;">
+                                <i class="fas fa-check-circle" style="margin-right: 8px;"></i>
+                                Tolleranza ≤ 0.1mm
+                            </div>
+                        </div>
+                        
+                        <!-- Carta 3: Garanzia -->
+                        <div class="cert-card" style="background: var(--glass-bg); padding: 40px; border-radius: 20px; 
+                                                    border: 1px solid var(--glass-border); text-align: center;">
+                            <div style="width: 80px; height: 80px; background: var(--accent-gradient); border-radius: 50%; 
+                                    display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;">
+                                <i class="fas fa-shield-alt" style="font-size: 32px; color: white;"></i>
+                            </div>
+                            <h3 style="color: white; margin-bottom: 15px; font-size: 22px;">Garanzia 24 Mesi</h3>
+                            <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
+                                Ogni prodotto è coperto da garanzia di 24 mesi su materiali e lavorazione
+                            </p>
+                            <div style="color: var(--accent-color); font-size: 14px; font-weight: 600;">
+                                <i class="fas fa-check-circle" style="margin-right: 8px;"></i>
+                                Garanzia estesa inclusa
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Loghi Certificazioni -->
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 40px; 
+                                flex-wrap: wrap; margin-top: 60px; padding: 40px; 
+                                background: rgba(255, 255, 255, 0.03); border-radius: 20px;">
+                        <div style="text-align: center;">
+                            <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.05); 
+                                    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                                    margin: 0 auto 15px;">
+                                <i class="fas fa-leaf" style="font-size: 32px; color: #4CAF50;"></i>
+                            </div>
+                            <div style="color: white; font-weight: 600;">Materiali Eco-Friendly</div>
+                        </div>
+                        
+                        <div style="text-align: center;">
+                            <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.05); 
+                                    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                                    margin: 0 auto 15px;">
+                                <i class="fas fa-industry" style="font-size: 32px; color: var(--accent-color);"></i>
+                            </div>
+                            <div style="color: white; font-weight: 600;">Made in Italy</div>
+                        </div>
+                        
+                        <div style="text-align: center;">
+                            <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.05); 
+                                    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                                    margin: 0 auto 15px;">
+                                <i class="fas fa-recycle" style="font-size: 32px; color: #00C853;"></i>
+                            </div>
+                            <div style="color: white; font-weight: 600;">Sostenibilità</div>
+                        </div>
+                        
+                        <div style="text-align: center;">
+                            <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.05); 
+                                    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                                    margin: 0 auto 15px;">
+                                <i class="fas fa-handshake" style="font-size: 32px; color: #FFC107;"></i>
+                            </div>
+                            <div style="color: white; font-weight: 600;">Artigianalità</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Pulsante per riaprire le promozioni -->
+        <button id="reopen-promo-btn" class="reopen-promo-btn" style="display: none;">
+            <i class="fas fa-gift"></i>
+            <span>Vedi offerte</span>
+        </button>
+
+        <!-- Catalogo Section -->
+        <section id="catalogo" class="section">
+            <h2 style="text-align: center; margin-bottom: 30px;">Catalogo Prodotti</h2>
+            
+            <div class="filter-controls">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Cerca prodotti...">
+                </div>
+                
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-category="tutti">Tutti</button>
+                    <button class="filter-btn" data-category="incisioni">Incisioni Laser</button>
+                    <button class="filter-btn" data-category="stampe3d">Stampe 3D</button>
+                    <button class="filter-btn" data-category="promozioni">
+                        <i class="fas fa-fire"></i> In Offerta
+                    </button>
+                </div>
+            </div>
+            
+            <div class="products-grid" id="products-container">
+                <!-- I prodotti verranno caricati qui -->
+            </div>
+        </section>
+
+        <!-- Favorites Section -->
+        <section id="favorites" class="section">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h2 style="margin-bottom: 10px; color: var(--accent-color);">
+                    <i class="fas fa-heart"></i> I Tuoi Preferiti
+                </h2>
+                <p style="color: var(--text-secondary);" id="favorites-count-text">
+                    Hai 0 prodotti nei preferiti
+                </p>
+            </div>
+            
+            <div class="products-grid" id="favorites-container">
+                <!-- I prodotti preferiti verranno caricati qui -->
+            </div>
+            
+            <div class="favorites-empty" id="favorites-empty" style="display: none; text-align: center; padding: 60px 20px;">
+                <i class="fas fa-heart" style="font-size: 48px; color: var(--accent-color); opacity: 0.5; margin-bottom: 20px;"></i>
+                <h3 style="color: var(--text-secondary); margin-bottom: 10px;">Nessun prodotto nei preferiti</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                    Clicca il cuore ♥ sui prodotti per salvarli qui!
+                </p>
+                <button class="glass-btn" data-section="catalogo" style="margin-top: 10px;">
+                    <span>Esplora Catalogo</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Chi Siamo Section - VERSIONE REWRITTEN -->
+        <section id="chi-siamo" class="section">
+            <div class="about-container">
+                <!-- Titolo principale -->
+                <div class="about-header">
+                    <h2 class="about-title">La Nostra Storia</h2>
+                    <div class="title-underline"></div>
+                    <p class="about-subtitle">Dove l'innovazione digitale incontra l'artigianalità marchigiana</p>
+                </div>
+
+                <div class="about-grid">
+                    <!-- Sezione Valori (Radicati & Missione) -->
+                        <!-- Radicati nelle Marche -->
+                        <div class="value-card">
+                            <div class="value-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="value-content">
+                                <h3 class="value-title">Radicati nelle Marche</h3>
+                                <p class="value-description">
+                                    Nati ad Acquaviva Picena, nel cuore delle Marche, portiamo avanti la tradizione artigianale 
+                                    italiana con uno sguardo rivolto al futuro. La nostra terra, ricca di storia e maestria, 
+                                    ci ispira ogni giorno a creare oggetti che uniscono bellezza e funzionalità.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- La Nostra Missione -->
+                        <div class="value-card">
+                            <div class="value-icon">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <div class="value-content">
+                                <h3 class="value-title">La Nostra Missione</h3>
+                                <p class="value-description">
+                                    Trasformare visioni in realtà tangibili. Che si tratti di un regalo personalizzato, 
+                                    di un prototipo per la tua azienda o di un oggetto decorativo unico, ci impegniamo 
+                                    a dare vita alle tue idee con precisione millimetrica e attenzione ai dettagli.
+                                </p>
+                            </div>
+                        </div>
+
+                    <!-- Sezione Servizi -->
+                    <div class="services-section glass-card">
+                        <h3 class="services-title">
+                            <i class="fas fa-cogs"></i> Cosa Offriamo
+                        </h3>
+                        
+                        <div class="services-grid">
+                            <div class="service-card" style="border-left-color: var(--accent-color);">
+                                <div class="service-header">
+                                    <div class="service-icon">
+                                        <i class="fas fa-fire"></i>
+                                    </div>
+                                    <h4>Incisioni Laser</h4>
+                                </div>
+                                <p>
+                                    Personalizzazioni su legno, plexiglass, metallo e pelle con precisione estrema. 
+                                    Ideale per targhe, regali aziendali, premi e oggetti commemorativi.
+                                </p>
+                            </div>
+                            
+                            <div class="service-card" style="border-left-color: #9400ff;">
+                                <div class="service-header">
+                                    <div class="service-icon">
+                                        <i class="fas fa-cube"></i>
+                                    </div>
+                                    <h4>Stampe 3D</h4>
+                                </div>
+                                <p>
+                                    Da prototipi funzionali a oggetti decorativi, utilizziamo filamenti PLA, ABS, 
+                                    PETG e materiali speciali per risultati durevoli e di qualità.
+                                </p>
+                            </div>
+                            
+                            <div class="service-card" style="border-left-color: #00C853;">
+                                <div class="service-header">
+                                    <div class="service-icon">
+                                        <i class="fas fa-lightbulb"></i>
+                                    </div>
+                                    <h4>Progettazione</h4>
+                                </div>
+                                <p>
+                                    Supporto nella progettazione 3D, modellazione e ottimizzazione dei file 
+                                    per garantire il miglior risultato possibile.
+                                </p>
+                            </div>
+                            
+                            <div class="service-card" style="border-left-color: #FFC107;">
+                                <div class="service-header">
+                                    <div class="service-icon">
+                                        <i class="fas fa-hands-helping"></i>
+                                    </div>
+                                    <h4>Consulenza</h4>
+                                </div>
+                                <p>
+                                    Consulenza gratuita per aiutarti a scegliere materiali, finiture e tecniche 
+                                    più adatte al tuo progetto.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sezione Video -->
+                    <div class="video-section gradient-card">
+                        <h3 class="video-title">
+                            <i class="fas fa-video"></i> I Nostri Macchinari in Azione
+                        </h3>
+                        
+                        <div class="videos-grid">
+                            <div class="video-card">
+                                <div class="video-container">
+                                    <video controls playsinline preload="metadata">
+                                        <source src="video/timeLapsInc1.mp4" type="video/mp4">
+                                        Il tuo browser non supporta il tag video.
+                                    </video>
+                                </div>
+                                <div class="video-info">
+                                    <h4>Incisore Laser Diodo in Azione</h4>
+                                    <p>Il nostro incisore laser lavora con precisione millimetrica su diversi materiali.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="video-card">
+                                <div class="video-container">
+                                    <video controls playsinline preload="metadata">
+                                        <source src="video/timeLapsSt3D2.mp4" type="video/mp4">
+                                        Il tuo browser non supporta il tag video.
+                                    </video>
+                                </div>
+                                <div class="video-info">
+                                    <h4>Stampante 3D al Lavoro</h4>
+                                    <p>Il nostro processo di stampa 3D con filamenti PLA/ABS di qualità, layer dopo layer.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="video-card">
+                                <div class="video-container">
+                                    <video controls playsinline preload="metadata">
+                                        <source src="video/timeVideoCMY.mp4" type="video/mp4">
+                                        Il tuo browser non supporta il tag video.
+                                    </video>
+                                </div>
+                                <div class="video-info">
+                                    <h4>Stampa Multicolore</h4>
+                                    <p>Tecnologia CMY per stampe a colori vivaci e litofanie.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="video-card">
+                                <div class="video-container">
+                                    <video controls playsinline preload="metadata">
+                                        <source src="video/timeLapsInc2.mp4" type="video/mp4">
+                                        Il tuo browser non supporta il tag video.
+                                    </video>
+                                </div>
+                                <div class="video-info">
+                                    <h4>Processo di Incisione</h4>
+                                    <p>Ogni dettaglio viene curato con la massima attenzione.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="video-note">
+                            <i class="fas fa-info-circle"></i>
+                            <p><strong>Nota:</strong> Questi sono video dimostrativi delle nostre macchine in azione.</p>
+                        </div>
+                    </div>
+
+                    <!-- Sezione Tecnologia -->
+                    <div class="tech-section gradient-card">
+                        <h3 class="tech-title">
+                            <i class="fas fa-microchip"></i> La Nostra Tecnologia
+                        </h3>
+                        
+                        <div class="tech-grid">
+                            <div class="tech-item">
+                                <div class="tech-icon">
+                                    <i class="fas fa-ruler-combined"></i>
+                                </div>
+                                <h4>Precisione Laser</h4>
+                                <p>Macchine Diodo con precisione di ±0.1mm</p>
+                            </div>
+                            
+                            <div class="tech-item">
+                                <div class="tech-icon">
+                                    <i class="fas fa-print"></i>
+                                </div>
+                                <h4>Stampa 3D FDM</h4>
+                                <p>Stampanti professionali a filamento</p>
+                            </div>
+                            
+                            <div class="tech-item">
+                                <div class="tech-icon">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <h4>Materiali Eco</h4>
+                                <p>PLA biodegradabile e legni certificati</p>
+                            </div>
+                            
+                            <div class="tech-item">
+                                <div class="tech-icon">
+                                    <i class="fas fa-laptop-code"></i>
+                                </div>
+                                <h4>Software Avanzati</h4>
+                                <p>Bambu Studio, LightBurn, Cura, Thinkercad</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sezione Statistiche -->
+                    <div class="stats-section glass-card">
+                        <h3 class="stats-title">Statistiche</h3>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <h4 style="color: var(--accent-color);">150+</h4>
+                                <p>Prodotti Realizzati</p>
+                                <div class="stat-underline" style="background: var(--accent-color);"></div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <h4 style="color: #00C853;">98%</h4>
+                                <p>Soddisfazione Clienti</p>
+                                <div class="stat-underline" style="background: #00C853;"></div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <h4 style="color: #9400ff;">5+</h4>
+                                <p>Anni di Esperienza</p>
+                                <div class="stat-underline" style="background: #9400ff;"></div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <h4 style="color: #FFC107;">50+</h4>
+                                <p>Clienti Soddisfatti</p>
+                                <div class="stat-underline" style="background: #FFC107;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Call to Action -->
+                    <div class="cta-section gradient-card">
+                        <h3 class="cta-title">Pronto a Realizzare il Tuo Progetto?</h3>
+                        <p class="cta-description">
+                            Che tu sia un privato, un'azienda o un creativo, siamo qui per trasformare 
+                            le tue idee in oggetti unici. Contattaci per un preventivo gratuito e senza impegno.
+                        </p>
+                        <div class="cta-buttons">
+                            <button class="glass-btn" data-section="contatti">
+                                <i class="fas fa-envelope"></i> Richiedi Preventivo
+                            </button>
+                            <button class="glass-btn btn-secondary" data-section="catalogo">
+                                <i class="fas fa-th-large"></i> Esplora Catalogo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contatti Section -->
+        <section id="contatti" class="section">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;">
+                <div style="background: var(--glass-bg); padding: 40px; border-radius: 20px;">
+                    <h2 style="margin-bottom: 30px; color: var(--accent-color);">Contattaci</h2>
+                    
+                    <div style="margin-bottom: 30px;">
+                        <h3 style="margin-bottom: 10px; color: var(--text-color);">
+                            <i class="fas fa-envelope" style="color: var(--accent-color); margin-right: 10px;"></i>
+                            Email
+                        </h3>
+                        <a href="mailto:meco.incisioni@gmail.com" style="color: var(--text-secondary); text-decoration: none;">
+                            meco.incisioni@gmail.com
+                        </a>
+                    </div>
+                    
+                    <div style="margin-bottom: 30px;">
+                        <h3 style="margin-bottom: 10px; color: var(--text-color);">
+                            <i class="fas fa-phone" style="color: var(--accent-color); margin-right: 10px;"></i>
+                            Telefono
+                        </h3>
+                        <div style="color: var(--text-secondary);">
+                            <div>+39 347 127 4652</div>
+                            <div>+39 380 645 8336</div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 style="margin-bottom: 10px; color: var(--text-color);">
+                            <i class="fas fa-map-marker-alt" style="color: var(--accent-color); margin-right: 10px;"></i>
+                            Indirizzo
+                        </h3>
+                        <p style="color: var(--text-secondary);">via E. Fermi (AP) 63075</p>
+                    </div>
+                </div>
+                
+                <div style="background: var(--glass-bg); padding: 40px; border-radius: 20px;">
+                    <h2 style="margin-bottom: 30px; color: var(--accent-color);">Richiedi Informazioni</h2>
+                    <form id="contact-form">
+                        <div style="margin-bottom: 20px;">
+                            <input type="text" placeholder="Nome" 
+                                   style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); 
+                                          border: 1px solid var(--glass-border); border-radius: 10px; 
+                                          color: var(--text-color);">
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <input type="email" placeholder="Email" 
+                                   style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); 
+                                          border: 1px solid var(--glass-border); border-radius: 10px; 
+                                          color: var(--text-color);">
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <textarea placeholder="Messaggio" rows="4"
+                                      style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); 
+                                             border: 1px solid var(--glass-border); border-radius: 10px; 
+                                             color: var(--text-color);"></textarea>
+                        </div>
+                        <button type="submit" class="glass-btn" style="width: 100%;">
+                            <span>Invia Messaggio</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Product Modal -->
+    <div class="modal" id="product-modal">
+        <div class="modal-content">
+            <button class="modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="modal-content">
+                <!-- Contenuto dinamico -->
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Floating Button -->
+    <div class="whatsapp-float">
+        <a href="https://wa.me/393471274652?text=Ciao%20MECO%21%20Vorrei%20informazioni%20sui%20vostri%20prodotti." 
+        target="_blank" 
+        class="whatsapp-btn"
+        aria-label="Contattaci su WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+            <span class="whatsapp-pulse"></span>
+        </a>
+    </div>
+
+    <!-- Promo Banners Container -->
+    <div id="promo-banners-container" style="max-width: 1200px; margin: 40px auto; padding: 0 20px;"></div>
+
+    <!-- Template per banner promozionale -->
+    <template id="promo-banner-template">
+        <div class="promo-banner glass-card" data-promo-id="">
+            <div class="promo-content">
+                <div class="promo-badge">
+                    <i class="fas fa-gift"></i>
+                    <span class="promo-label">OFFERTA</span>
+                </div>
+                <h3 class="promo-title">Titolo Offerta</h3>
+                <p class="promo-description">Descrizione offerta</p>
+                
+                <div class="countdown-container">
+                    <div class="countdown-box">
+                        <span class="countdown-number" data-type="days">00</span>
+                        <span class="countdown-label">Giorni</span>
+                    </div>
+                    <div class="countdown-box">
+                        <span class="countdown-number" data-type="hours">00</span>
+                        <span class="countdown-label">Ore</span>
+                    </div>
+                    <div class="countdown-box">
+                        <span class="countdown-number" data-type="minutes">00</span>
+                        <span class="countdown-label">Minuti</span>
+                    </div>
+                    <div class="countdown-box">
+                        <span class="countdown-number" data-type="seconds">00</span>
+                        <span class="countdown-label">Secondi</span>
+                    </div>
+                </div>
+                
+                <button class="promo-btn glass-btn" data-section="catalogo">
+                    <span>Sfrutta l'offerta</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            <button class="promo-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </template>
+
+    <!-- Footer -->
+    <footer class="glass-footer">
+        <div class="footer-content">
+            <div>
+                <h3 style="margin-bottom: 20px; color: var(--accent-color);">MECO</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 10px;">Incisioni Laser & Stampe 3D</p>
+                <p style="color: var(--text-secondary);">Precisione digitale unita all'artigianato tradizionale</p>
+            </div>
+            
+            <div>
+                <h4 style="margin-bottom: 20px; color: var(--accent-color);">Link Rapidi</h4>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a href="#" data-section="home" style="color: var(--text-secondary); text-decoration: none;">Home</a>
+                    <a href="#" data-section="catalogo" style="color: var(--text-secondary); text-decoration: none;">Catalogo</a>
+                    <a href="#" data-section="chi-siamo" style="color: var(--text-secondary); text-decoration: none;">Chi Siamo</a>
+                    <a href="#" data-section="contatti" style="color: var(--text-secondary); text-decoration: none;">Contatti</a>
+                </div>
+            </div>
+            
+            <div>
+                <h4 style="margin-bottom: 20px; color: var(--accent-color);">Orari</h4>
+                <p style="color: var(--text-secondary); margin-bottom: 10px;">Lun-Ven: 9:00 - 18:00</p>
+                <p style="color: var(--text-secondary); margin-bottom: 10px;">Sab: 9:00 - 13:00</p>
+                <p style="color: var(--text-secondary);">Domenica: Chiuso</p>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--glass-border);">
+            <p style="color: var(--text-secondary);">
+                &copy; 2024 MECO - Incisioni e Stampe 3D. Tutti i diritti riservati.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Aggiungi sezione -->
+    <section id="ordini" class="section">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+            <h2 style="margin-bottom: 30px; color: var(--accent-color);">
+                <i class="fas fa-box"></i> I Miei Ordini
+            </h2>
+            
+            <div id="orders-container" style="min-height: 300px;">
+                <!-- Ordini verranno caricati qui -->
+            </div>
+            
+            <div id="no-orders" style="text-align: center; padding: 60px 20px; display: none;">
+                <i class="fas fa-box-open" style="font-size: 48px; color: var(--text-secondary); opacity: 0.5;"></i>
+                <h3 style="margin-top: 20px; color: var(--text-secondary);">Nessun ordine</h3>
+                <p style="color: var(--text-secondary);">Non hai ancora effettuato ordini</p>
+                <button class="glass-btn" data-section="catalogo" style="margin-top: 20px;">
+                    <span>Vai allo shopping</span>
+                    <i class="fas fa-store"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Carrello -->
+    <div id="cart-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 800px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h2 style="color: var(--accent-color);">
+                    <i class="fas fa-shopping-cart"></i> Il Tuo Carrello
+                </h2>
+                <button class="modal-close" onclick="window.app.ui.closeCartModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="cart-content">
+                <!-- Contenuto dinamico -->
+            </div>
+            
+            <div id="cart-empty" style="text-align: center; padding: 40px; display: none;">
+                <i class="fas fa-shopping-cart" style="font-size: 48px; color: var(--text-secondary); opacity: 0.5;"></i>
+                <h3 style="margin-top: 20px; color: var(--text-secondary);">Carrello vuoto</h3>
+                <p style="color: var(--text-secondary);">Aggiungi prodotti al carrello!</p>
+                <button class="glass-btn" onclick="window.app.navigation.switchSection('catalogo')" 
+                        style="margin-top: 20px;">
+                    <i class="fas fa-store"></i> Vai allo shop
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Checkout -->
+    <div id="checkout-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 600px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h2 style="color: var(--accent-color);">
+                    <i class="fas fa-credit-card"></i> Checkout
+                </h2>
+                <button class="modal-close" onclick="window.app.ui.closeCheckoutModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="checkout-content">
+                <!-- Contenuto dinamico checkout -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Login -->
+    <div id="login-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 400px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h2 style="color: var(--accent-color);">
+                    <i class="fas fa-sign-in-alt"></i> Accedi
+                </h2>
+                <button class="modal-close" onclick="document.getElementById('login-modal').style.display = 'none'">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="login-form" style="display: flex; flex-direction: column; gap: 20px;">
+                <input type="email" id="login-email" placeholder="Email" required
+                    style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); 
+                            border: 1px solid var(--glass-border); border-radius: 10px;
+                            color: var(--text-color);">
+                
+                <input type="password" id="login-password" placeholder="Password" required
+                    style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); 
+                            border: 1px solid var(--glass-border); border-radius: 10px;
+                            color: var(--text-color);">
+                
+                <button type="submit" class="glass-btn" style="width: 100%;">
+                    <span>Accedi</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <p style="color: var(--text-secondary);">
+                        Non hai un account? 
+                        <a href="#" onclick="
+                            document.getElementById('login-modal').style.display = 'none';
+                            setTimeout(() => window.app.auth.showSignupModal(), 300);
+                        " style="color: var(--accent-color); cursor: pointer;">
+                            Registrati
+                        </a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Registrazione -->
+    <div id="signup-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 400px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h2 style="color: var(--accent-color);">
+                    <i class="fas fa-user-plus"></i> Registrati
+                </h2>
+                <button class="modal-close" onclick="document.getElementById('signup-modal').style.display = 'none'">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="signup-form" style="display: flex; flex-direction: column; gap: 20px;">
+                <input type="text" id="signup-name" placeholder="Nome" required
+                    style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); 
+                            border: 1px solid var(--glass-border); border-radius: 10px;
+                            color: var(--text-color);">
+                
+                <input type="text" id="signup-surname" placeholder="Cognome" required
+                    style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); 
+                            border: 1px solid var(--glass-border); border-radius: 10px;
+                            color: var(--text-color);">
+                
+                <input type="email" id="signup-email" placeholder="Email" required
+                    style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); 
+                            border: 1px solid var(--glass-border); border-radius: 10px;
+                            color: var(--text-color);">
+                
+                <input type="password" id="signup-password" placeholder="Password" required
+                    style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); 
+                            border: 1px solid var(--glass-border); border-radius: 10px;
+                            color: var(--text-color);">
+                
+                <input type="password" id="signup-confirm" placeholder="Conferma Password" required
+                    style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); 
+                            border: 1px solid var(--glass-border); border-radius: 10px;
+                            color: var(--text-color);">
+                
+                <button type="submit" class="glass-btn" style="width: 100%;">
+                    <span>Registrati</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <p style="color: var(--text-secondary);">
+                        Hai già un account? 
+                        <a href="#" onclick="
+                            document.getElementById('signup-modal').style.display = 'none';
+                            setTimeout(() => window.app.auth.showLoginModal(), 300);
+                        " style="color: var(--accent-color); cursor: pointer;">
+                            Accedi
+                        </a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Modulare -->
+    <script src="js/utils/storage.js" type="module"></script>
+    <script src="js/utils/helpers.js" type="module"></script>
+    <script src="js/services/supabase.js" type="module"></script>
+    <script src="js/modules/products.js" type="module"></script>
+    <script src="js/modules/promotions.js" type="module"></script>
+    <script src="js/modules/favorites.js" type="module"></script>
+    <script src="js/modules/modal.js" type="module"></script>
+    <script src="js/modules/navigation.js" type="module"></script>
+    <script src="js/modules/ui.js" type="module"></script>
+    <script src="js/modules/auth.js" type="module"></script>
+    <script src="js/modules/cart.js" type="module"></script>
+    <script src="js/modules/checkout.js" type="module"></script>
+    <script src="js/effects/particles.js" type="module"></script>
+    <script src="js/app.js" type="module"></script>
+</body>
+</html>

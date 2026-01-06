@@ -1,0 +1,146 @@
+<!-- admin.html -->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>MECO Admin</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: #f5f5f5; 
+        }
+        .admin-container { max-width: 1400px; margin: 0 auto; }
+        .stat-card { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+            margin-bottom: 20px; 
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: white; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        }
+        th, td { 
+            padding: 12px 15px; 
+            text-align: left; 
+            border-bottom: 1px solid #ddd; 
+        }
+        th { background: #0072ff; color: white; }
+        .status-pending { color: #FFC107; }
+        .status-confirmed { color: #4CAF50; }
+        .status-shipped { color: #2196F3; }
+        .btn { 
+            padding: 8px 16px; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin: 0 5px; 
+        }
+        .btn-primary { background: #0072ff; color: white; }
+        .btn-success { background: #4CAF50; color: white; }
+        .btn-warning { background: #FFC107; color: black; }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <h1>Dashboard Amministrazione MECO</h1>
+        
+        <div class="stat-card">
+            <h3>Statistiche Oggi</h3>
+            <div id="today-stats"></div>
+        </div>
+        
+        <div class="stat-card">
+            <h3>Ordini Recenti</h3>
+            <div id="recent-orders"></div>
+        </div>
+        
+        <div class="stat-card">
+            <h3>Gestione Prodotti</h3>
+            <button class="btn btn-primary" onclick="loadProducts()">Carica Prodotti</button>
+            <div id="products-list"></div>
+        </div>
+    </div>
+    
+    <script type="module">
+        import { supabase } from './js/services/supabase.js';
+        
+        async function loadRecentOrders() {
+            const { data, error } = await supabase
+                .from('orders')
+                .select('*')
+                .order('created_at', { ascending: false })
+                .limit(10);
+            
+            if (error) {
+                console.error(error);
+                return;
+            }
+            
+            const container = document.getElementById('recent-orders');
+            container.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Numero</th>
+                            <th>Cliente</th>
+                            <th>Totale</th>
+                            <th>Stato</th>
+                            <th>Data</th>
+                            <th>Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${data.map(order => `
+                            <tr>
+                                <td>${order.order_number}</td>
+                                <td>${order.customer_name} ${order.customer_surname}</td>
+                                <td>€${order.total_amount}</td>
+                                <td class="status-${order.order_status}">${order.order_status}</td>
+                                <td>${new Date(order.created_at).toLocaleDateString('it-IT')}</td>
+                                <td>
+                                    <button class="btn btn-success" onclick="updateOrder('${order.id}', 'confirmed')">
+                                        Conferma
+                                    </button>
+                                    <button class="btn btn-warning" onclick="updateOrder('${order.id}', 'shipped')">
+                                        Spedito
+                                    </button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+        
+        async function updateOrder(orderId, status) {
+            const { error } = await supabase
+                .from('orders')
+                .update({ order_status: status })
+                .eq('id', orderId);
+            
+            if (!error) {
+                alert('Ordine aggiornato!');
+                loadRecentOrders();
+            }
+        }
+        
+        // Carica dati all'avvio
+        loadRecentOrders();
+        
+        // Controlla autenticazione
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if (!session) {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>
